@@ -115,7 +115,7 @@ CREATE TABLE faults (
 
 ### Get All Faults
 
-**GET** `/api/faults`
+**GET** `/faults/getAll`
 - Returns all stored fault entries
 
 ### Get Faults By Data Type
@@ -124,7 +124,7 @@ CREATE TABLE faults (
 
 Example:
 ```
-GET /api/faults/datatype/binary-input
+GET /faults/findBy/binary-input
 ```
 
 ### Get All Device IPs
@@ -215,11 +215,7 @@ public List<Fault> findByDataType(String dataType) {
         FROM faults
         WHERE data_type = ?
     """;
-    return jdbcTemplate.query(
-        sql,
-        faultRowMapper,
-        dataType
-    );
+     return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getString("object_name"), dataType );
 }
 ```
 
